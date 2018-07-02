@@ -45,7 +45,7 @@ db.Connect(function (error) {
 })
 
 //Endpoint to POST bps to Service Layer
-app.post('/InsertItem', function (req, res) {
+app.post('/InsertBusinessPartner', function (req, res) {
   db.Insert(req.body, function (error, resp) {
     res.redirect('/');
   });
@@ -89,23 +89,23 @@ app.get('/GetEnv', function (req, res) {
 
 //Synchronize Local DB with B1 SL
 app.post('/Sync', function (req, res) {
-  console.log("LETS SYNC ITEMS");
+  console.log("LETS SYNC BusinessPartnerS");
   db.Select(function (error, rows) {
     if (error) {
       console.log('Cant Select rows')
       console.log(error);
     } else {
-      console.log("HERE ARE ITEMS TO SYNC" + JSON.stringify(rows));
+      console.log("HERE ARE BusinessPartnerS TO SYNC" + JSON.stringify(rows));
       var bps = 0
       for (var i = 0; i < rows.length; i++) {
-        var body = { CardCode: rows[i].code, CardName: rows[i].name }
-        console.log("Sync Item " + rows[i].code)
-        sl.PostBusinessPartners(slOptions, body, function (err, slItem) {
+        var body = { CardCode: rows[i].code, CardName: rows[i].name, CardType: rows[i].type,  }
+        console.log("Sync BusinessPartner " + rows[i].code)
+        sl.PostBusinessPartners(slOptions, body, function (err, slBP) {
           bps++;
           if (!err) {
-            db.Update(slItem.CardCode, function (err, resp) {
+            db.Update(slBP.CardCode, function (err, resp) {
               if (!err) {
-                console.log("Item Synchronized");
+                console.log("BP Synchronized");
               } else {
                 console.error(err);
               }

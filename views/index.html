@@ -44,8 +44,8 @@
         <button id="sync" class="btn btn-info btn-md">
                 <i class="fa fa-refresh"></i> Sync
         </button>
-        <h4>Why not add a new Item?</h4>
-        <form method="post" action="/InsertItem" class="form-inline">
+        <h4>Why not add a new BusinessPartner?</h4>
+        <form method="post" action="/InsertBusinessPartner" class="form-inline">
             <div class="form-group">
                 <label for="code">Code</label>
                 <input type="text" class="form-control" name="code" name="code">
@@ -54,6 +54,15 @@
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select class="form-control" name="type" name="type">
+                    <option value="L">Lead</option>
+                    <option value="S">Customer</option>
+                    <option value="C">Supplier</option>
+                  </select> 
+                <br>
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>

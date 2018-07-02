@@ -19,7 +19,7 @@ var SLServer =   process.env.B1_SERVER_ENV+":"
                 +process.env.B1_SLPATH_ENV;
 //Load Node Modules
 var req = require('request') // HTTP Client
-var ItemGroupCode = 103; //Just for filtering
+var BusinessPartnerGroupCode = 103; //Just for filtering
 
 function Connect(callback) {
     var uri = SLServer + "Login"
@@ -83,22 +83,21 @@ function PostBusinessPartners(options, body, callback) {
 
     //Set HTTP Request Options
     options.uri = uri
-    body.BusinessPartnersGroupCode = ItemGroupCode
     options.body = JSON.stringify(body);
 
     console.log("Posting BusinessPartners to SL on " + uri);
-    console.log("Item body: \n" + JSON.stringify(body));
+    console.log("BusinessPartner body: \n" + JSON.stringify(body));
 
     //Make Request
     req.post(options, function (error, response, body) {
         if (!error && response.statusCode == 201) {
             body = JSON.parse(body);
             delete body["odata.metadata"];
-            console.log("ITEM CREATED - " + JSON.stringify(body))
+            console.log("BusinessPartner CREATED - " + JSON.stringify(body))
             return callback(null, body);
         } else {
             if (!error){
-                error = "Can't Create SL ITEM"
+                error = "Can't Create SL BusinessPartner"
                 console.error(body)
             }
             return callback(error);
