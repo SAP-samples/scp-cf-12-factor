@@ -19,7 +19,7 @@ var SLServer =   process.env.B1_SERVER_ENV+":"
                 +process.env.B1_SLPATH_ENV;
 //Load Node Modules
 var req = require('request') // HTTP Client
-var BusinessPartnerGroupCode = 103; //Just for filtering
+var BusinessPartnerGroupCode = 100; //Just for filtering
 
 function Connect(callback) {
     var uri = SLServer + "Login"
@@ -57,6 +57,7 @@ function Connect(callback) {
 function GetBusinessPartners(options, callback) {
     var uri = SLServer + "BusinessPartners?$select=CardCode,CardName,"
         + "CardType,CurrentAccountBalance"
+        + "&$filter=GroupCode%20eq%20"+BusinessPartnerGroupCode
     var resp = {}
 
     //Set HTTP Request Options
@@ -84,7 +85,7 @@ function PostBusinessPartners(options, body, callback) {
     //Set HTTP Request Options
     options.uri = uri
     options.body = JSON.stringify(body);
-
+    body.GroupCode = BusinessPartnerGroupCode
     console.log("Posting BusinessPartners to SL on " + uri);
     console.log("BusinessPartner body: \n" + JSON.stringify(body));
 
