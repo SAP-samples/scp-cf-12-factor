@@ -44,15 +44,15 @@ db.Connect(function (error) {
   }
 })
 
-//Endpoint to POST items to Service Layer
+//Endpoint to POST bps to Service Layer
 app.post('/InsertItem', function (req, res) {
   db.Insert(req.body, function (error, resp) {
     res.redirect('/');
   });
 });
 
-//Endpoint to POST items to Service Layer
-app.get('/SelectItems', function (req, res) {
+//Endpoint to POST bps to Service Layer
+app.get('/SelectBusinessPartners', function (req, res) {
   db.Select(function (error, resp) {
     if (error) {
       console.log('Cant Select rows')
@@ -65,11 +65,11 @@ app.get('/SelectItems', function (req, res) {
 });
 
 
-//EndPoint To retrieve Items from Service Layer
-app.get('/GetItems', function (req, res) { 
-  sl.GetItems(slOptions, function (error, resp) {
+//EndPoint To retrieve BusinessPartners from Service Layer
+app.get('/GetBusinessPartners', function (req, res) { 
+  sl.GetBusinessPartners(slOptions, function (error, resp) {
     if (error) {
-      console.error("Can't get Items from Service Layer - " + error);
+      console.error("Can't get BusinessPartners from Service Layer - " + error);
       res.send(error);
     } else {
       res.setHeader('Content-Type', 'application/json');
@@ -96,21 +96,21 @@ app.post('/Sync', function (req, res) {
       console.log(error);
     } else {
       console.log("HERE ARE ITEMS TO SYNC" + JSON.stringify(rows));
-      var items = 0
+      var bps = 0
       for (var i = 0; i < rows.length; i++) {
-        var body = { ItemCode: rows[i].code, ItemName: rows[i].name }
+        var body = { CardCode: rows[i].code, CardName: rows[i].name }
         console.log("Sync Item " + rows[i].code)
-        sl.PostItems(slOptions, body, function (err, slItem) {
-          items++;
+        sl.PostBusinessPartners(slOptions, body, function (err, slItem) {
+          bps++;
           if (!err) {
-            db.Update(slItem.ItemCode, function (err, resp) {
+            db.Update(slItem.CardCode, function (err, resp) {
               if (!err) {
                 console.log("Item Synchronized");
               } else {
                 console.error(err);
               }
             })
-            if (items == rows.length){
+            if (bps == rows.length){
               res.redirect('/');
             }
           }

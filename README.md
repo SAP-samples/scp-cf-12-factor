@@ -3,7 +3,7 @@
 
 This is a sample step by step guide of how to build cloud applications based on [Cloud Foundry](https://www.cloudfoundry.org/). 
 It is coded in [NodeJ](https://nodejs.org/en/) and also makes use of [PostGreSQL](https://cloudplatform.sap.com/dmp/capabilities/us/product/PostgreSQL-on-SAP-Cloud-Platform/) available in the [SAP Cloud Platform](https://cloudplatform.sap.com). 
-It is integrated with [SAP Business One](https://www.sap.com/uk/products/business-one.html) using the [Service Layer](https://www.youtube.com/watch?v=zaF_i7x9-s0&list=PLMdHXbewhZ2QsgYSICRQuoL8lkoEHjNzS&index=22) to list and update Items. 
+It is integrated with [SAP Business One](https://www.sap.com/uk/products/business-one.html) using the [Service Layer](https://www.youtube.com/watch?v=zaF_i7x9-s0&list=PLMdHXbewhZ2QsgYSICRQuoL8lkoEHjNzS&index=22) to list and update BusinessPartners. 
 The idea of this application is based in the [beer-list](https://github.com/mariantalla/beer-list) app.
 
 

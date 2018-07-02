@@ -1,15 +1,15 @@
 $(document).ready(function () {
-	//Get Items List from SL
-	$.get("/GetItems", function (json) {
-		displayItems(json);
+	//Get BusinessPartners List from SL
+	$.get("/GetBusinessPartners", function (json) {
+		displayBusinessPartners(json);
 	});
 	//Get Environment Variables
 	$.get("/GetEnv", function (json) {
 		displayEnvironment(json);
 	});
-	//Get Items from Cloud Platform DB
-	$.get("/SelectItems", function (json) {
-		displayItemsSQL(json);
+	//Get BusinessPartners from Cloud Platform DB
+	$.get("/SelectBusinessPartners", function (json) {
+		displayBusinessPartnersSQL(json);
 	});
 
 	$('#sync').on('click', function () {
@@ -25,20 +25,19 @@ $(document).ready(function () {
 
 });
 
-function displayItems(json) {
-	var items = json.value;
+function displayBusinessPartners(json) {
+	var bps = json.value;
 	$("#resultTable tbody").empty();
 	//Lines	
-	for (var i = 0; i < items.length; i++) {
+	for (var i = 0; i < bps.length; i++) {
 		$("#resultTable tbody").append(
 			"<tr>" +
 			"<td>" + (i + 1) + "</td>" +
-			"<td>" + items[i].ItemCode + "</td>" +
-			"<td>" + items[i].ItemName + "</td>" +
-			"<td>" + items[i].QuantityOnStock + "</td>" +
-			"<td>" + (items[i].QuantityOrderedFromVendors +
-				items[i].QuantityOrderedByCustomers) + "</td>" +
-			"</tr>");
+			"<td>" + bps[i].CardCode + "</td>" +
+			"<td>" + bps[i].CardName + "</td>" +
+			"<td>" + bps[i].CardType + "</td>" +
+			"<td>" + bps[i].CurrentAccountBalance + "</td>" +
+			"</tr>")
 	}
 }
 
@@ -48,16 +47,16 @@ function displayEnvironment(json) {
 		"<div>" + "<strong>Served by server #</strong> " + json.instance + "</div>");
 }
 
-function displayItemsSQL(items) {
+function displayBusinessPartnersSQL(bps) {
 	$("#resultTableSQL tbody").empty();
 	//Lines	
-	for (var i = 0; i < items.length; i++) {
+	for (var i = 0; i < bps.length; i++) {
 		$("#resultTableSQL tbody").append(
 			"<tr>" +
 			"<td>" + (i + 1) + "</td>" +
-			"<td>" + items[i].code + "</td>" +
-			"<td>" + items[i].name + "</td>" +
-			"<td>" + items[i].integrated + "</td>" +
+			"<td>" + bps[i].code + "</td>" +
+			"<td>" + bps[i].name + "</td>" +
+			"<td>" + bps[i].integrated + "</td>" +
 			"</tr>");
 	}
 }

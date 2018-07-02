@@ -4,11 +4,11 @@ module.exports = {
     Connect: function (response) {
         return (Connect(response));
     },
-    GetItems: function (options, response) {
-        return (GetItems(options, response));
+    GetBusinessPartners: function (options, response) {
+        return (GetBusinessPartners(options, response));
     },
-    PostItems: function (options, body, response) {
-        return (PostItems(options, body, response));
+    PostBusinessPartners: function (options, body, response) {
+        return (PostBusinessPartners(options, body, response));
     }
 }
 
@@ -54,16 +54,15 @@ function Connect(callback) {
 
 }
 
-function GetItems(options, callback) {
-    var uri = SLServer + "Items?$select=ItemCode,ItemName,"
-        + "QuantityOnStock,QuantityOrderedFromVendors,QuantityOrderedByCustomers"
-        + "&$filter=ItemsGroupCode%20eq%20"+ItemGroupCode
+function GetBusinessPartners(options, callback) {
+    var uri = SLServer + "BusinessPartners?$select=CardCode,CardName,"
+        + "CardType,CurrentAccountBalance"
     var resp = {}
 
     //Set HTTP Request Options
     options.uri = uri
 
-    console.log("Getting Items From SL on " + uri);
+    console.log("Getting BusinessPartners From SL on " + uri);
 
     //Make Request
     req.get(options, function (error, response, body) {
@@ -77,17 +76,17 @@ function GetItems(options, callback) {
     });
 }
 
-function PostItems(options, body, callback) {
+function PostBusinessPartners(options, body, callback) {
 
-    var uri = SLServer + "Items"
+    var uri = SLServer + "BusinessPartners"
     var resp = {}
 
     //Set HTTP Request Options
     options.uri = uri
-    body.ItemsGroupCode = ItemGroupCode
+    body.BusinessPartnersGroupCode = ItemGroupCode
     options.body = JSON.stringify(body);
 
-    console.log("Posting Items to SL on " + uri);
+    console.log("Posting BusinessPartners to SL on " + uri);
     console.log("Item body: \n" + JSON.stringify(body));
 
     //Make Request
