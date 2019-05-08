@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 
 /* Load Local Modules */
 var sl = require('./modules/serviceLayer');
-var db = require('./modules/persist');
+var db = require('./db/persist');
+
 var slOptions = {
   headers: {
     "Content-Type": "application/json",
