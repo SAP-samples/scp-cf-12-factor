@@ -27,21 +27,13 @@ var pgClient = new pg.Client(credentials)
 
 function Connect(callback) {
     console.log('PG Connecting')
-    var query = 'CREATE TABLE IF NOT EXISTS bpsscp (code varchar(256) NOT NULL, name varchar(256) NOT NULL, type varchar(1) NOT NULL, integrated boolean NOT NULL)'
     pgClient.connect(function (err) {
-        console.log('PG Connected')
         if (err) {
             console.log(err)
             callback(err)
-        } else {
-            console.log('PG Creating Table')
-            pgClient.query(query, function (err, result) {
-                console.log('PG Table created')
-                if (err) {
-                    callback(err)
-                }
-            });
-        }
+            return;
+        } 
+        console.log('PG Connected')
     });
 }
 
