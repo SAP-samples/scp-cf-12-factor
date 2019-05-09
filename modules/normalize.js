@@ -18,43 +18,19 @@ function NormalizeData(dataType, data) {
     property = process.env.ERP
     
     var normData = {}
-    // for (property in data) {
-        var formatPath = path.join(__dirname, 'schemas', property, dataType + ".json")
-        console.log("Reading normalization schema for " + property + " from " + formatPath);
-        normData = data
-        if (!fs.existsSync(formatPath)) {
-            // If there is no schema, don't normalize
-            console.error("No normalization schema found for " + path.join('schemas', property, dataType))
-        } else {
-            var format = JSON.parse(fs.readFileSync(formatPath, 'utf8'));
-            normData.value = Normalize(data.value, format)
-            console.log("Data normalized")
-        }
-    // }
-    return normData
-}
-
-function NormalizeQuery(dataType, data) {
-
-    console.log("Starting Query normalization for " + dataType)
-    var normData = {}
-    for (property in data) {
-        var formatPath = path.join(__dirname, 'schemas', property, dataType + ".json")
-        console.log("Reading normalization schema for " + property + " from " + formatPath);
-
-        normData[property] = data[property]
-        if (!fs.existsSync(formatPath)) {
-            // If there is no schema, don't normalize
-            console.error("No normalization schema found for " + path.join('schemas', property, dataType))
-        } else {
-            var format = JSON.parse(fs.readFileSync(formatPath, 'utf8'));
-
-            /** TO implement query nomalization here */
-        }
+    var formatPath = path.join(__dirname, 'schemas', property, dataType + ".json")
+    console.log("Reading normalization schema for " + property + " from " + formatPath);
+    normData = data
+    if (!fs.existsSync(formatPath)) {
+        // If there is no schema, don't normalize
+        console.error("No normalization schema found for " + path.join('schemas', property, dataType))
+    } else {
+        var format = JSON.parse(fs.readFileSync(formatPath, 'utf8'));
+        normData.value = Normalize(data.value, format)
+        console.log("Data normalized")
     }
     return normData
 }
-
 
 function Normalize(input, format) {
 
