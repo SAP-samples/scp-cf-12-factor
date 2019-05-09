@@ -8,7 +8,7 @@ module.exports = {
     SetCache: function (inCache) { cache = inCache; }
 }
 
-const SLServer = process.env.B1_SL_HOST
+const SLServer = process.env.B1_ODATA_HOST
 
 const request = require('request')  // HTTP Client
 const moment = require('moment') // Date Time manipulation
@@ -91,7 +91,7 @@ let slConnect = function () {
 
 function GetBusinessPartners(query, callback) {
     var options = {}
-    var select = "$select=CardCode,CardName,CardType,CurrentAccountBalance"
+    var select = "$select=CardCode,CardName,CardType"
     options.url = SLServer + "/BusinessPartners?"+select
     options.method = "GET"
 
