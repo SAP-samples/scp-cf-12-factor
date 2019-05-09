@@ -1,6 +1,5 @@
 {
     "code": "CardCode",
     "name": "CardName",
-    "type": "CardType",
-    "balance": "CurrentAccountBalance"
+    "type": "CardType"
 }
