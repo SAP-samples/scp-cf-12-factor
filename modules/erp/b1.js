@@ -7,13 +7,19 @@ module.exports = {
     }
 }
 
-const SLServer = process.env.B1_SERVER_ENV + ":" + process.env.B1_SLPORT_ENV + process.env.B1_SLPATH_ENV;
+const SLServer = process.env.B1_SL_HOST
 
 const request = require('request')  // HTTP Client
 const moment = require('moment') // Date Time manipulation
 const redis = require("redis")
 
-function ServiceLayerRequest(options, callback) {
+
+//Hash Keys for Redis DB
+const hash_Session = "b1_SessionID"
+const hash_Timeout = "b1_Timeout"
+const timout_exp = "b1_Expire"
+
+function serviceLayerRequest(options, callback) {
 
     console.log("Preparing Service Layer Request:" +JSON.stringify(options.method) +" - "+JSON.stringify(options.url))
 
@@ -26,8 +32,8 @@ function ServiceLayerRequest(options, callback) {
             } else {
                 if (response.statusCode == 401) {
                     //Invalid Session
-                    Connect().then(function () {
-                        ServiceLayerRequest(options, callback)
+                    slConnect().then(function () {
+                        serviceLayerRequest(options, callback)
                     }).catch(function (error, response) {
                         callback(error, response)
                     })
@@ -39,24 +45,24 @@ function ServiceLayerRequest(options, callback) {
         });
     })
         .catch(function () {
-            Connect().then(function () {
-                ServiceLayerRequest(options, callback)
+            slConnect().then(function () {
+                serviceLayerRequest(options, callback)
             }).catch(function (error, response) {
                 callback(error, response)
             })
         })
 }
 
-let Connect = function () {
+let slConnect = function () {
     return new Promise(function (resolve, reject) {
         var uri = SLServer + "/Login"
         var resp = {}
 
         //B1 Login Credentials
         var data = {
-            UserName: process.env.B1_USER_ENV,
-            Password: process.env.B1_PASS_ENV,
-            CompanyDB: process.env.B1_COMP_ENV
+            UserName: process.env.ERP_USER,
+            Password: process.env.ERP_PASSWORD,
+            CompanyDB: process.env.ERP_TENANT
         };
 
         //Set HTTP Request Options
@@ -84,7 +90,18 @@ let Connect = function () {
 }
 
 function GetBusinessPartners(options, callback) {
-    
+    var options = {}
+    var select = "$select=CardCode,CardName,CardType,Balance"
+    options.url = SLServer + "/BusinessPartners?"+select
+    options.method = "GET"
+
+    serviceLayerRequest(options, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            callback(null, JSON.parse(body));
+        } else {
+            callback(error);
+        }
+});
 }
 
 function PostBusinessPartners(options, body, callback) {
