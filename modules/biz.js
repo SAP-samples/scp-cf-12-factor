@@ -2,6 +2,8 @@
 
 const b1 = require("./erp/b1")
 const byd = require("./erp/byd")
+const normalize = require("./normalize")
+
 const erp = eval(process.env.ERP);
 
 module.exports = {
@@ -29,9 +31,7 @@ function GetBusinessPartners(query, callback) {
         //     output[origin]["odata.nextLink"] = items["odata.nextLink"];
         // }
 
-       // resolve(normalize.Items(output))
-
-       callback(null, output)
+       callback(null, normalize.BusinessPartners(output))
     })
 }
 
