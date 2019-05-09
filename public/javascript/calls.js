@@ -33,16 +33,16 @@ function displayBusinessPartners(json) {
 		$("#resultTable tbody").append(
 			"<tr>" +
 			"<td>" + (i + 1) + "</td>" +
-			"<td>" + bps[i].CardCode + "</td>" +
-			"<td>" + bps[i].CardName + "</td>" +
-			"<td>" + bps[i].CardType + "</td>" +
-			"<td>" + bps[i].CurrentAccountBalance + "</td>" +
+			"<td>" + bps[i].code + "</td>" +
+			"<td>" + bps[i].name + "</td>" +
+			"<td>" + bps[i].type + "</td>" +
 			"</tr>")
 	}
 }
 
 function displayEnvironment(json) {
 	$("#env").append(
+		"<div>" + "<strong>SL ERP:</strong> " + json.erp + "</div>" +
 		"<div>" + "<strong>SL SessionID:</strong> " + json.sl + "</div>" +
 		"<div>" + "<strong>Served by server #</strong> " + json.instance + "</div>");
 }
@@ -56,6 +56,7 @@ function displayBusinessPartnersSQL(bps) {
 			"<td>" + (i + 1) + "</td>" +
 			"<td>" + bps[i].code + "</td>" +
 			"<td>" + bps[i].name + "</td>" +
+			"<td>" + bps[i].type + "</td>" +
 			"<td>" + bps[i].integrated + "</td>" +
 			"</tr>");
 	}
