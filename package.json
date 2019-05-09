@@ -1,14 +1,14 @@
 {
-  "name": "cfdemosummit18",
+  "name": "cf-12-factor.git",
   "version": "1.0.0",
-  "description": "A NodeJS sample app to demonstrate cloud foundry and B1 Service Layer",
+  "description": "A NodeJS sample app to demonstrate 12 - factor apps on cloud foundry with B1 and ByD",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ralphive/cfDemoSummit18.git"
+    "url": "git+https://github.com/Ralphive/cf-12-factor.git"
   },
   "keywords": [
     "service",
@@ -28,9 +28,9 @@
   "author": "@Ralphive",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ralphive/cfDemoSummit18/issues"
+    "url": "https://github.com/Ralphive/cf-12-factor.git/issues"
   },
-  "homepage": "https://github.com/Ralphive/cfDemoSummit18#readme",
+  "homepage": "https://github.com/Ralphive/cf-12-factor.git#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
