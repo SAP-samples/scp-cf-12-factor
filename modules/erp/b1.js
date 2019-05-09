@@ -1,17 +1,17 @@
 module.exports = {
-    GetBusinessPartners: function (options, response) {
-        return (GetBusinessPartners(options, response));
+    GetBusinessPartners: function (query, response) {
+        return (GetBusinessPartners(query, response));
     },
-    PostBusinessPartners: function (options, body, response) {
-        return (PostBusinessPartners(options, body, response));
-    }
+    PostBusinessPartners: function (query, body, response) {
+        return (PostBusinessPartners(query, body, response));
+    },
+    SetCache: function (inCache) { cache = inCache; }
 }
 
 const SLServer = process.env.B1_SL_HOST
 
 const request = require('request')  // HTTP Client
 const moment = require('moment') // Date Time manipulation
-const redis = require("redis")
 
 
 //Hash Keys for Redis DB
@@ -89,9 +89,9 @@ let slConnect = function () {
 
 }
 
-function GetBusinessPartners(options, callback) {
+function GetBusinessPartners(query, callback) {
     var options = {}
-    var select = "$select=CardCode,CardName,CardType,Balance"
+    var select = "$select=CardCode,CardName,CardType,CurrentAccountBalance"
     options.url = SLServer + "/BusinessPartners?"+select
     options.method = "GET"
 
@@ -104,7 +104,7 @@ function GetBusinessPartners(options, callback) {
 });
 }
 
-function PostBusinessPartners(options, body, callback) {
+function PostBusinessPartners(query, body, callback) {
 
     
 }
@@ -112,13 +112,13 @@ function PostBusinessPartners(options, body, callback) {
 let getCookiesCache = function () {
     return new Promise(function (resolve, reject) {
 
-        redis.hget(hash_Timeout, timout_exp, function (error, expire) {
+        cache.hget(hash_Timeout, timout_exp, function (error, expire) {
             if (moment().isAfter(expire)) {
                 //SessionID cached is expired or Doesn't Exist
                 console.log("Cached SL Session ID Expired")
                 reject()
             } else {
-                redis.lrange(hash_Session, 0, -1, function (err, cookies) {
+                cache.lrange(hash_Session, 0, -1, function (err, cookies) {
                     if (cookies.length > 0) {
                         console.log("Cached SL Session Retrieved")
                         resolve(cookies)
@@ -134,8 +134,8 @@ let getCookiesCache = function () {
 
 function setCookiesCache(cookies, callback) {
     // Dump Previous SL Session ID Cache and creates a new one
-    redis.del(hash_Session, function () {
-        redis.rpush(hash_Session, cookies, function () {
+    cache.hdel(hash_Session, function () {
+        cache.rpush(hash_Session, cookies, function () {
             console.log("Storing SL Session ID in cache")
             callback();
         });
@@ -144,23 +144,40 @@ function setCookiesCache(cookies, callback) {
 
 function setSLSessionTimeout(timeout) {
     //Store the Session Timeout
-    redis.hset(hash_Timeout, hash_Timeout, timeout)
+    cache.hset(hash_Timeout, hash_Timeout, timeout)
 
     //Calculates and store when session will be expired
     var expire = moment(moment.now()).add(timeout, 'minutes')
-    redis.hset(hash_Timeout, timout_exp, expire.format())
+    cache.hset(hash_Timeout, timout_exp, expire.format())
 
 }
 
 function updateSLSessionTimeout() {
     //Calculates and store when session will be expired
     console.log("Updating SL Session Expiration date in cache")
-    redis.hget(hash_Timeout, hash_Timeout, function (error, reply) {
+    cache.hget(hash_Timeout, hash_Timeout, function (error, reply) {
         if (error) {
-            console.error("Can't Update Session Timeout in Redis " + error)
+            console.error("Can't Update Session Timeout in cache " + error)
         } else {
             var expire = moment(moment.now()).add(reply, 'minutes')
-            redis.hset(hash_Timeout, timout_exp, expire.format())
+            cache.hset(hash_Timeout, timout_exp, expire.format())
         }
     })
 }
+
+// //First Thing, coonect to SL and store a SessionID
+// if (!process.env.APIHUB) {
+//     sl.Connect(function (error, resp) {
+//       if (error) {
+//         console.error("Can't Connect to Service Layer");
+//         console.error(error);
+//         return; // Abort Execution
+//       } else {
+//         slOptions.headers["Cookie"] = resp.cookie;
+//       }
+//     });
+//   } else {
+//     slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
+//     slOptions.headers["APIKey"] = process.env.APIKey
+//   }
+  
