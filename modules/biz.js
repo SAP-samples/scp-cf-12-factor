@@ -13,6 +13,10 @@ module.exports = {
     PostBusinessPartners: function (query, body, response) {
         return (PostBusinessPartners(query, body, response));
     },
+
+    RetrieveToken: function(response){
+        return (erp.RetrieveToken(response))
+    },
     
     SetCache: function (inCache) {
         erp.SetCache(inCache)

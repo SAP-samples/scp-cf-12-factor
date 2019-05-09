@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	//Get BusinessPartners List from SL
-	$.get("/GetBusinessPartners", function (json) {
+	$.get("/erp/BusinessPartners", function (json) {
 		displayBusinessPartners(json);
 	});
 	//Get Environment Variables
@@ -8,7 +8,7 @@ $(document).ready(function () {
 		displayEnvironment(json);
 	});
 	//Get BusinessPartners from Cloud Platform DB
-	$.get("/SelectBusinessPartners", function (json) {
+	$.get("/db/SelectBP", function (json) {
 		displayBusinessPartnersSQL(json);
 	});
 
@@ -42,8 +42,8 @@ function displayBusinessPartners(json) {
 
 function displayEnvironment(json) {
 	$("#env").append(
-		"<div>" + "<strong>SL ERP:</strong> " + json.erp + "</div>" +
-		"<div>" + "<strong>SL SessionID:</strong> " + json.sl + "</div>" +
+		"<div>" + "<strong>ERP:</strong> " + json.erp + "</div>" +
+		"<div>" + "<strong>SessionID/Token:</strong> " + json.token + "</div>" +
 		"<div>" + "<strong>Served by server #</strong> " + json.instance + "</div>");
 }
 

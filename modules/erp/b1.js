@@ -5,6 +5,13 @@ module.exports = {
     PostBusinessPartners: function (query, body, response) {
         return (PostBusinessPartners(query, body, response));
     },
+    RetrieveToken: function(response){
+        getCookiesCache().then(function (cookies) {
+            response(cookies)
+        }).catch(function () {
+            response(null);
+        })
+    },
     SetCache: function (inCache) { cache = inCache; }
 }
 
@@ -44,8 +51,7 @@ function serviceLayerRequest(options, callback) {
             }
             callback(error, response, body);
         });
-    })
-        .catch(function () {
+    }).catch(function () {
             slConnect().then(function () {
                 serviceLayerRequest(options, callback)
             }).catch(function (error, response) {
