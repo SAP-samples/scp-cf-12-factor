@@ -8,7 +8,7 @@ module.exports = {
     SetCache: function (inCache) { cache = inCache; }
 }
 
-const SLServer = process.env.B1_ODATA_HOST
+const SLServer = process.env.ERP_ODATA_HOST
 
 const request = require('request')  // HTTP Client
 const moment = require('moment') // Date Time manipulation
@@ -32,13 +32,14 @@ function serviceLayerRequest(options, callback) {
             } else {
                 if (response.statusCode == 401) {
                     //Invalid Session
+                    console.log("Request response with status: " + response.statusCode + "Possibly invalid cache")
                     slConnect().then(function () {
                         serviceLayerRequest(options, callback)
                     }).catch(function (error, response) {
                         callback(error, response)
                     })
-                    console.log("Request response with status: " + response.statusCode +
-                        "\nRequest headers: " + JSON.stringify(response.headers))
+                }else{
+                    updateSLSessionTimeout()
                 }
             }
             callback(error, response, body);
@@ -106,9 +107,11 @@ function GetBusinessPartners(query, callback) {
 
 function PostBusinessPartners(query, body, callback) {
 
-    
+    //** TODO */
 }
 
+
+// ** Cache Functions ** //
 let getCookiesCache = function () {
     return new Promise(function (resolve, reject) {
 
@@ -134,7 +137,7 @@ let getCookiesCache = function () {
 
 function setCookiesCache(cookies, callback) {
     // Dump Previous SL Session ID Cache and creates a new one
-    cache.hdel(hash_Session, function () {
+    cache.del(hash_Session, function () {
         cache.rpush(hash_Session, cookies, function () {
             console.log("Storing SL Session ID in cache")
             callback();
@@ -160,24 +163,7 @@ function updateSLSessionTimeout() {
             console.error("Can't Update Session Timeout in cache " + error)
         } else {
             var expire = moment(moment.now()).add(reply, 'minutes')
-            cache.hset(hash_Timeout, timout_exp, expire.format())
+            cache.hset(timout_exp, timout_exp, expire.format())
         }
     })
 }
-
-// //First Thing, coonect to SL and store a SessionID
-// if (!process.env.APIHUB) {
-//     sl.Connect(function (error, resp) {
-//       if (error) {
-//         console.error("Can't Connect to Service Layer");
-//         console.error(error);
-//         return; // Abort Execution
-//       } else {
-//         slOptions.headers["Cookie"] = resp.cookie;
-//       }
-//     });
-//   } else {
-//     slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
-//     slOptions.headers["APIKey"] = process.env.APIKey
-//   }
-  
