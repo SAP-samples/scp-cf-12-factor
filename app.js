@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 /* Configure Redis Cache */
-console.log("Configuring redis")
+console.log("Connecting to Redis...")
 var credentials = null;
 var vcap = null;
 if (process.env.VCAP_SERVICES) {
@@ -27,6 +27,7 @@ if (process.env.VCAP_SERVICES) {
       console.log("Redis credentials found in VCAP")
      } else{
       console.error("Redis service not bound to the app")
+      return
     }
 };
 
