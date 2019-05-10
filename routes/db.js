@@ -19,8 +19,8 @@ router.post('/InsertBP', function (req, res) {
 router.get('/SelectBP', function (req, res) {
     db.Select(function (error, resp) {
         if (error) {
-            console.log('Cant Select rows')
-            console.log(error);
+            console.error('Cant Select rows')
+            console.error(error);
         } else {
             res.setHeader('Content-Type', 'application/json');
             res.send(resp);
