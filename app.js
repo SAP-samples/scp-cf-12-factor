@@ -21,9 +21,13 @@ var vcap = null;
 if (process.env.VCAP_SERVICES) {
     credentials = {}
     vcap = JSON.parse(process.env.VCAP_SERVICES);
-    credentials = vcap['redis'][0].credentials;
-    credentials.host = credentials.hostname
-    console.log("Redis credentials found in VCAP")
+    if(vcap.hasOwnProperty('redis')){
+      credentials = vcap.redis[0].credentials;
+      credentials.host = credentials.hostname
+      console.log("Redis credentials found in VCAP")
+     } else{
+      console.error("Redis service not bound to the app")
+    }
 };
 
 var redisClient = redis.createClient(credentials);

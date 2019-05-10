@@ -19,9 +19,14 @@ const pg = require("pg")
 var credentials = null;
 var vcap = null;
 if (process.env.VCAP_SERVICES) {
-    console.log("VCAP Services Found")
     vcap = JSON.parse(process.env.VCAP_SERVICES);
-    credentials = { connectionString: vcap.postgresql[0].credentials.uri }
+    
+    if(vcap.hasOwnProperty('postgresql')){
+        credentials = { connectionString: vcap.postgresql[0].credentials.uri }
+        console.log("PostgresSQL found in VCAP Services")
+    }else{
+        console.error("PostgresSQL service not bound to the app")
+    }
 }
 var pgClient = new pg.Client(credentials)
 
