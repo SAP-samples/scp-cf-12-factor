@@ -7,7 +7,14 @@ module.exports = {
     },
     SetCache: function (inCache) {
         cache = inCache;
-    }
+    },
+    RetrieveToken: function(response){
+        getCookiesCache('POST').then(function (cookies) {
+            response(cookies)
+        }).catch(function () {
+            response(null);
+        })
+    },
 }
 
 
@@ -85,8 +92,9 @@ function ByDRequest(options, callback) {
 function GetBusinessPartners(query, callback) {
     var options = {};
     var select = "&$select=InternalID,BusinessPartnerName,RoleCodeText"
+    var filter = "&$filter=RoleCodeText eq 'Supplier' or RoleCodeText eq 'Account'"
 
-    options.url = ByDServer + model_bps+"?$format=json"+select
+    options.url = ByDServer + model_bps+"?$format=json"+select+filter
     options.method = "GET"
 
     ByDRequest(options, function (error, response, bodyItems) {
