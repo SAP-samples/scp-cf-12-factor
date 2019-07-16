@@ -19,29 +19,52 @@ const pg = require("pg")
 var credentials = null;
 var vcap = null;
 
+
+//Check where the PostgreSQL instance will come from. 
+//From CF BackingServiecs, OR a Remote Host OR a local PG (credentials = null)
 console.log("Connecting to PostgresSQL...")
 if (process.env.VCAP_SERVICES) {
     vcap = JSON.parse(process.env.VCAP_SERVICES);
     
     if(vcap.hasOwnProperty('postgresql')){
+        //Postgresql on CloudFoundry services
         credentials = { connectionString: vcap.postgresql[0].credentials.uri }
         console.log("PostgresSQL found in VCAP Services")
     }else{
-        console.error("PostgresSQL service not bound to the app")
-        return
+        console.log("No PostgresSQL found in VCAP Services")
+
     }
 }
+
+if(!credentials){
+    //Maybe PostgreSQL on a remote enviroment
+    console.log("Looking for remote PostgresSQL connection details")
+    if(process.env.PG_HOST){
+
+        console.log("trying to connect to PostgreSQL on " + process.env.PG_HOST)
+        credentials = {
+            user: process.env.PG_USER,
+            host: process.env.PG_HOST,
+            port: process.env.PG_PORT,
+            database: process.env.PG_DATABASE,
+            password: process.env.PG_PASSWORD,
+        }
+    }else{
+        console.log("No remote PostreSQL details found, will try to connect locally")
+    }
+}
+
 var pgClient = new pg.Client(credentials)
 
 function Connect(callback) {
-    console.log('PG Connecting')
+    console.log('PostgreSQL Connecting')
     pgClient.connect(function (err) {
         if (err) {
-            console.log(err)
+            console.error(err)
             callback(err)
             return;
         } 
-        console.log('PG Connected')
+        console.log('PostgreSQL Connected')
     });
 }
 
