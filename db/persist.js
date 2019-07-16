@@ -69,7 +69,7 @@ function Connect(callback) {
 }
 
 function Select(callback) {
-    var query = 'SELECT code, name, type, integrated FROM bpsscp where integrated = false'
+    var query = 'SELECT code, name, type, integrated FROM fact12_bps where integrated = false'
     pgClient.query(query, function (err, result) {
         if (err) {
             callback(err)
@@ -82,7 +82,7 @@ function Select(callback) {
 function Insert(data, callback) {
     console.log('PG Inserting Table data '+ JSON.stringify(data))
 
-    var query = 'INSERT INTO bpsscp(code,name, type, integrated) VALUES($1, $2, $3, $4)';
+    var query = 'INSERT INTO fact12_bps(code,name, type, integrated) VALUES($1, $2, $3, $4)';
     pgClient.query(query, [data.code,data.name,data.type, false], function (err,result){
         if (err) {
             callback(err)
@@ -95,7 +95,7 @@ function Insert(data, callback) {
 function Update(BusinessPartner, callback) {
     console.log('PG Updating Table data '+ JSON.stringify(BusinessPartner))
 
-    var query = 'UPDATE bpsscp SET integrated = true WHERE code = $1';
+    var query = 'UPDATE fact12_bps SET integrated = true WHERE code = $1';
     pgClient.query(query, [BusinessPartner], function (err,result){
         if (err) {
             callback(err)
