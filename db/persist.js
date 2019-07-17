@@ -48,6 +48,7 @@ if(!credentials){
             port: process.env.PG_PORT,
             database: process.env.PG_DATABASE,
             password: process.env.PG_PASSWORD,
+            ssl: true
         }
     }else{
         console.log("No remote PostreSQL details found, will try to connect locally")

@@ -57,6 +57,9 @@ Sample 12-factor app showing a ERP Agnostic Loosely Coupled Architecture. This a
     e.g: cf create-service <Service> <Plan> <service_instance>
     $ cf create-service postgresql v9.4-dev clouddb
     $ cf bind-service <appName> clouddb
+
+
+
  **STEP 5** - Restart the app
 
     $ cf restart <appName>
