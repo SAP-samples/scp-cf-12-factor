@@ -18,20 +18,43 @@ app.use(express.static('public'));
 console.log("Connecting to Redis...")
 var credentials = null;
 var vcap = null;
+
+//Check where the Redis instance will come from. 
+//From CF BackingServiecs, OR a Remote Host OR a local (credentials = null)
 if (process.env.VCAP_SERVICES) {
-    credentials = {}
     vcap = JSON.parse(process.env.VCAP_SERVICES);
+    
     if(vcap.hasOwnProperty('redis')){
       credentials = vcap.redis[0].credentials;
       credentials.host = credentials.hostname
       console.log("Redis credentials found in VCAP")
-     } else{
-      console.error("Redis service not bound to the app")
-      return
+    }else{
+      console.log("No Redis found in VCAP Services")
     }
 };
 
+if(!credentials){
+    //Maybe Redis is on a remote enviroment
+    console.log("Looking for remote Redis connection details")
+    if(process.env.REDIS_HOST){
+        console.log("trying to connect to Redis on " + process.env.REDIS_HOST)
+        credentials = {
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+            password: process.env.REDIS_PASSWORD,
+
+        }
+    }else{
+        console.log("No remote Redis details found, will try to connect locally")
+    }
+}
+
 var redisClient = redis.createClient(credentials);
+redisClient.on('error', function (er) {
+  console.trace('Here I am'); 
+  console.error(er.stack); 
+});
+
 redisClient.on('connect', function () {
     console.log("Connected to Redis")
     biz.SetCache(redisClient)
