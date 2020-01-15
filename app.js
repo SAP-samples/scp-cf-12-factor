@@ -49,10 +49,12 @@ if (!credentials) {
   }
 }
 
-var redisClient = redis.createClient(credentials);
+
+var redisClient = redis.createClient(credentials,);
+
 redisClient.on('error', function (er) {
-  console.trace('Here I am');
-  console.error(er.stack);
+  console.log('No REDISs. App running without a Cache System');
+  //console.error(er.stack);
 });
 
 redisClient.on('connect', function () {
@@ -64,7 +66,7 @@ var output = {};
 
 db.Connect(function (error) {
   if (error) {
-    console.error("Can't Connect to CF Database");
+    console.error("Can't Connect to Postgres Database");
     console.error(error);
   }
 })

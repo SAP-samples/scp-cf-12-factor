@@ -26,6 +26,9 @@ const hash_Session = "b1_SessionID"
 const hash_Timeout = "b1_Timeout"
 const timout_exp = "b1_Expire"
 
+// Handle Session ID in case there is no Cache System
+var G_SESSION_ID = null; 
+
 function serviceLayerRequest(options, callback) {
 
     console.log("Preparing Service Layer Request:" +JSON.stringify(options.method) +" - "+JSON.stringify(options.url))
@@ -121,40 +124,56 @@ function PostBusinessPartners(query, body, callback) {
 let getCookiesCache = function () {
     return new Promise(function (resolve, reject) {
 
-        cache.hget(hash_Timeout, timout_exp, function (error, expire) {
-            if (moment().isAfter(expire)) {
-                //SessionID cached is expired or Doesn't Exist
-                console.log("Cached SL Session ID Expired")
-                reject()
-            } else {
-                cache.lrange(hash_Session, 0, -1, function (err, cookies) {
-                    if (cookies.length > 0) {
-                        console.log("Cached SL Session Retrieved")
-                        resolve(cookies)
-                    } else {
-                        console.log("Cached SL not found")
-                        reject();
-                    }
-                });
+        try{
+            cache.hget(hash_Timeout, timout_exp, function (error, expire) {
+                if (moment().isAfter(expire)) {
+                    //SessionID cached is expired or Doesn't Exist
+                    console.log("Cached SL Session ID Expired")
+                    reject()
+                } else {
+                    cache.lrange(hash_Session, 0, -1, function (err, cookies) {
+                        if (cookies.length > 0) {
+                            console.log("Cached SL Session Retrieved")
+                            resolve(cookies)
+                        } else {
+                            console.log("Cached SL not found")
+                            reject();
+                        }
+                    });
+                }
+            })
+        }
+        catch(error){
+            if (G_SESSION_ID){
+                resolve(G_SESSION_ID)
+            }else{
+                reject();
             }
-        })
+        }
     })
 }
 
 function setCookiesCache(cookies, callback) {
     // Dump Previous SL Session ID Cache and creates a new one
-    cache.del(hash_Session, function () {
-        cache.rpush(hash_Session, cookies, function () {
-            console.log("Storing SL Session ID in cache")
-            callback();
-        });
-    })
+    try{
+        cache.del(hash_Session, function () {
+            cache.rpush(hash_Session, cookies, function () {
+                console.log("Storing SL Session ID in cache")
+                callback();
+            });
+        })
+    }catch(e){
+        G_SESSION_ID  = cookies
+        callback();
+    }
 }
 
 function setSLSessionTimeout(timeout) {
+    if (G_SESSION_ID){
+        return
+    }
     //Store the Session Timeout
     cache.hset(hash_Timeout, hash_Timeout, timeout)
-
     //Calculates and store when session will be expired
     var expire = moment(moment.now()).add(timeout, 'minutes')
     cache.hset(hash_Timeout, timout_exp, expire.format())
@@ -163,6 +182,10 @@ function setSLSessionTimeout(timeout) {
 
 function updateSLSessionTimeout() {
     //Calculates and store when session will be expired
+    if (G_SESSION_ID){
+        // No Cache expiration handling if not using Redis
+        return
+    }
     console.log("Updating SL Session Expiration date in cache")
     cache.hget(hash_Timeout, hash_Timeout, function (error, reply) {
         if (error) {
