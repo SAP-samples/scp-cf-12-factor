@@ -5,19 +5,21 @@ module.exports = {
     PostBusinessPartners: function (query, body, response) {
         return (PostBusinessPartners(query, body, response));
     },
-    RetrieveToken: function(response){
+    RetrieveToken: function (response) {
         getCookiesCache().then(function (cookies) {
             response(cookies)
         }).catch(function () {
             response(null);
         })
     },
-    SetCache: function (inCache) { cache = inCache; }
+    SetCache: function (inCache) {
+        cache = inCache;
+    }
 }
 
 const SLServer = process.env.ERP_ODATA_HOST
 
-const request = require('request')  // HTTP Client
+const request = require('request') // HTTP Client
 const moment = require('moment') // Date Time manipulation
 
 
@@ -27,14 +29,16 @@ const hash_Timeout = "b1_Timeout"
 const timout_exp = "b1_Expire"
 
 // Handle Session ID in case there is no Cache System
-var G_SESSION_ID = null; 
+var G_SESSION_ID = null;
 
 function serviceLayerRequest(options, callback) {
 
-    console.log("Preparing Service Layer Request:" +JSON.stringify(options.method) +" - "+JSON.stringify(options.url))
+    console.log("Preparing Service Layer Request:" + JSON.stringify(options.method) + " - " + JSON.stringify(options.url))
 
     getCookiesCache().then(function (cookies) {
-        options.headers = { 'Cookie': cookies };
+        options.headers = {
+            'Cookie': cookies
+        };
 
         request(options, function (error, response, body) {
             if (error) {
@@ -48,19 +52,19 @@ function serviceLayerRequest(options, callback) {
                     }).catch(function (error, response) {
                         callback(error, response)
                     })
-                }else{
+                } else {
                     updateSLSessionTimeout()
                 }
             }
             callback(error, response, body);
         });
     }).catch(function () {
-            slConnect().then(function () {
-                serviceLayerRequest(options, callback)
-            }).catch(function (error, response) {
-                callback(error, response)
-            })
+        slConnect().then(function () {
+            serviceLayerRequest(options, callback)
+        }).catch(function (error, response) {
+            callback(error, response)
         })
+    })
 }
 
 let slConnect = function () {
@@ -76,7 +80,11 @@ let slConnect = function () {
         };
 
         //Set HTTP Request Options
-        options = { uri: uri, body: JSON.stringify(data), timeout: 10000 }
+        options = {
+            uri: uri,
+            body: JSON.stringify(data),
+            timeout: 10000
+        }
         console.log("Connecting to SL on " + uri);
 
         //Make Request
@@ -102,7 +110,7 @@ let slConnect = function () {
 function GetBusinessPartners(query, callback) {
     var options = {}
     var select = "$select=CardCode,CardName,CardType"
-    options.url = SLServer + "/BusinessPartners?"+select
+    options.url = SLServer + "/BusinessPartners?" + select
     options.method = "GET"
 
     serviceLayerRequest(options, function (error, response, body) {
@@ -111,7 +119,7 @@ function GetBusinessPartners(query, callback) {
         } else {
             callback(error);
         }
-});
+    });
 }
 
 function PostBusinessPartners(query, body, callback) {
@@ -124,7 +132,7 @@ function PostBusinessPartners(query, body, callback) {
 let getCookiesCache = function () {
     return new Promise(function (resolve, reject) {
 
-        try{
+        try {
             cache.hget(hash_Timeout, timout_exp, function (error, expire) {
                 if (moment().isAfter(expire)) {
                     //SessionID cached is expired or Doesn't Exist
@@ -142,11 +150,10 @@ let getCookiesCache = function () {
                     });
                 }
             })
-        }
-        catch(error){
-            if (G_SESSION_ID){
+        } catch (error) {
+            if (G_SESSION_ID) {
                 resolve(G_SESSION_ID)
-            }else{
+            } else {
                 reject();
             }
         }
@@ -155,21 +162,21 @@ let getCookiesCache = function () {
 
 function setCookiesCache(cookies, callback) {
     // Dump Previous SL Session ID Cache and creates a new one
-    try{
+    try {
         cache.del(hash_Session, function () {
             cache.rpush(hash_Session, cookies, function () {
                 console.log("Storing SL Session ID in cache")
                 callback();
             });
         })
-    }catch(e){
-        G_SESSION_ID  = cookies
+    } catch (e) {
+        G_SESSION_ID = cookies
         callback();
     }
 }
 
 function setSLSessionTimeout(timeout) {
-    if (G_SESSION_ID){
+    if (G_SESSION_ID) {
         return
     }
     //Store the Session Timeout
@@ -182,7 +189,7 @@ function setSLSessionTimeout(timeout) {
 
 function updateSLSessionTimeout() {
     //Calculates and store when session will be expired
-    if (G_SESSION_ID){
+    if (G_SESSION_ID) {
         // No Cache expiration handling if not using Redis
         return
     }
