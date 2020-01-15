@@ -82,7 +82,6 @@ function ByDRequest(options, callback) {
             // }
         })
     }).catch(function (e) {
-
         console.error(e)
         Connect().then(function () {
             ByDRequest(options, callback)
