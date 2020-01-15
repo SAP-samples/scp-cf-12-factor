@@ -8,7 +8,7 @@ module.exports = {
     SetCache: function (inCache) {
         cache = inCache;
     },
-    RetrieveToken: function(response){
+    RetrieveToken: function (response) {
         getCookiesCache('POST').then(function (cookies) {
             response(cookies)
         }).catch(function () {
@@ -26,6 +26,10 @@ const moment = require('moment') // Date Time manipulation
 //Hash Keys for Redis DB
 const hash_Session = "byd_SessionID"
 const hash_csrf = "byd_CSRF"
+
+// Handle CSRF in case there is no Cache System
+var G_COOKIES = null;
+var G_CSRF = null;
 
 //ByD Models
 const model_bps = "/vmubusinesspartner/BusinessPartnerCollection"
@@ -94,7 +98,7 @@ function GetBusinessPartners(query, callback) {
     var select = "&$select=InternalID,BusinessPartnerName,RoleCodeText"
     var filter = "&$filter=RoleCodeText eq 'Supplier' or RoleCodeText eq 'Account'"
 
-    options.url = ByDServer + model_bps+"?$format=json"+select+filter
+    options.url = ByDServer + model_bps + "?$format=json" + select + filter
     options.method = "GET"
 
     ByDRequest(options, function (error, response, bodyItems) {
@@ -209,15 +213,23 @@ let getCookiesCache = function (method) {
             return resolve(null)
         }
 
-        client.lrange(hash_Session, 0, -1, function (err, cookies) {
-            if (cookies.length > 0) {
-                console.log("Cached ByD cookies Retrieved")
-                resolve(cookies)
+        try {
+            client.lrange(hash_Session, 0, -1, function (err, cookies) {
+                if (cookies.length > 0) {
+                    console.log("Cached ByD cookies Retrieved")
+                    resolve(cookies)
+                } else {
+                    console.log("Cached ByD cookies not found")
+                    reject();
+                }
+            });
+        } catch (error) {
+            if (G_COOKIES) {
+                resolve(G_COOKIES)
             } else {
-                console.log("Cached ByD cookies not found")
                 reject();
             }
-        });
+        }
     })
 }
 
@@ -227,6 +239,10 @@ let getTokenCache = function (method) {
         if (method == "GET" || method == "HEAD") {
             // Get Method doesnt require token
             return resolve("fetch")
+        }
+
+        if (G_COOKIES) {
+            return resolve(G_CSRF)
         }
 
         client.hget(hash_csrf, hash_csrf, function (error, csrfToken) {
@@ -245,16 +261,27 @@ let getTokenCache = function (method) {
 
 function setCookiesCache(cookies, callback) {
     // Dump Previous Cookies Cache and creates a new one
-    client.del(hash_Session, function () {
-        client.rpush(hash_Session, cookies, function () {
-            console.log("Storing ByD Cookies in cache")
-            callback();
-        });
-    })
+
+    try {
+        client.del(hash_Session, function () {
+            client.rpush(hash_Session, cookies, function () {
+                console.log("Storing ByD Cookies in cache")
+                callback();
+            });
+        })
+    } catch (e) {
+        G_COOKIES = cookies
+        callback();
+    }
 }
 
 function setByDToken(csrfToken) {
     //Store the Session Timeout
+
+    if (G_COOKIES) {
+        G_CSRF = csrfToken
+    }
+
     client.hset(hash_csrf, hash_csrf, csrfToken)
     console.log("Storing ByD CSRF token in cache")
 }
