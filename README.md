@@ -8,9 +8,9 @@ _forked from B1SA/cfDemoSummit18_
 
   
 
-Sample 12-factor app showing a resilient, ERP Agnostic Loosely Coupled Architecture. This application works with both B1 and ByD.
+Sample [12-factor app](https://12factor.net/) showing a scalable, resilient, ERP Agnostic, Loosely Coupled Architecture. This application works with both B1 and ByD.
 
-It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) layers. These backing services are optional for the application to run, but extremely recommended.
+It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) layers. These backing services are optional for the app to run, but extremely recommended.
 
   
 
