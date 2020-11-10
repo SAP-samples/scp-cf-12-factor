@@ -20,7 +20,7 @@ It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) laye
 
 * SAP Business One - Service Layer Exposed
 
-* SAP Business ByDesign - [Business Partner Custom Odata Service](https://github.com/SAP/sapbydesign-api-samples/blob/master/Business%20Partner%20Data/Custom%20OData%20Service/vmubusinesspartner.xml)
+* SAP Business ByDesign - [Business Partner Custom Odata Service](https://github.com/SAP-samples/byd-api-samples/blob/master/Custom%20OData%20Services/khbusinesspartner.xml)
 
   
 

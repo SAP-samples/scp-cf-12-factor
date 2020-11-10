@@ -32,7 +32,7 @@ var G_COOKIES = null;
 var G_CSRF = null;
 
 //ByD Models
-const model_bps = "/vmubusinesspartner/BusinessPartnerCollection"
+const model_bps = "/khubusinesspartner/BusinessPartnerCollection"
 
 //Load Environment Variables
 const ByDServer = process.env.ERP_ODATA_HOST;
