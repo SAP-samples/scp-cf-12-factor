@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: byd-delta-events
+Upstream-Contact: Ralphive <>
+Source: https://github.com/B1SA/cf-12-factor.git
+
+# Sample paragraph, commented out:
+#
+Files: * 
+Copyright: 2020 SAP SE or an SAP affiliate company and byd-delta-events contributors
+License: Apache-2.0

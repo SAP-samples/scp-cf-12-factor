@@ -1,6 +1,3 @@
-
-  
-
 # cf-12-factor - LOCAL DEPLOYMENT
 
 ## Prerequisites

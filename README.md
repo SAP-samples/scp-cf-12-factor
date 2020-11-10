@@ -1,22 +1,15 @@
-
-  
-
 # cf-12-factor
 _forked from B1SA/cfDemoSummit18_
 
 [![SAP](https://i.imgur.com/kkQTp3m.png)](https://cloudplatform.sap.com)
 
-  
-
+## Description  
 Sample [12-factor app](https://12factor.net/) showing a scalable, resilient, ERP Agnostic, Loosely Coupled Architecture. This application works with both B1 and ByD.
-
 It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) layers. These backing services are optional for the app to run, but extremely recommended.
 
-This application can be deployed also on a Local Machine (for development purposes)
+This application can be deployed also on a [Local Machine (for development purposes)](README-local.md)
 
-  
-
-## Prerequisites
+## Requirments
 ### Digital Core
 
 * SAP Business One - Service Layer Exposed
@@ -26,7 +19,7 @@ This application can be deployed also on a Local Machine (for development purpos
 *  [Install the Cloud Foundry CLI](https://developers.sap.com/tutorials/cp-cf-download-cli.html)
 *  [Learn the Fundamentals of SCP Cloud Foundry](https://developers.sap.com/tutorials/cp-cf-fundamentals.html)
 
-## Cloud Deployment
+## Deployment
 **STEP 1** - Download or Clone this repository
 ```bash
 git clone https://github.com/Ralphive/cf-12-factor.git
@@ -55,10 +48,12 @@ cf restart cf-12-factor
 
 **STEP 6** - Run the app on the **route** displayed in the terminal
 
-  
-
-## Backing Service offerings:
-
+### Backing Service offerings:
 *  [Redis on Azure](https://azure.microsoft.com/en-gb/services/cache/)
-
 *  [Postgres on AWS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html) or on [Azure](https://azure.microsoft.com/en-gb/services/postgresql/)
+
+## Support and Contributions
+This repository is provided "as-is". No support is available. Feel free to open issues or provide pull requests.
+
+## License
+Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
