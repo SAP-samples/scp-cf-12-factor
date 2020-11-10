@@ -32,7 +32,7 @@ var G_COOKIES = null;
 var G_CSRF = null;
 
 //ByD Models
-const model_bps = "/khubusinesspartner/BusinessPartnerCollection"
+const model_bps = "/khbusinesspartner/BusinessPartnerCollection"
 
 //Load Environment Variables
 const ByDServer = process.env.ERP_ODATA_HOST;
@@ -94,8 +94,8 @@ function ByDRequest(options, callback) {
 
 function GetBusinessPartners(query, callback) {
     var options = {};
-    var select = "&$select=InternalID,BusinessPartnerName,RoleCodeText"
-    var filter = "&$filter=RoleCodeText eq 'Supplier' or RoleCodeText eq 'Account'"
+    var select = "&$select=InternalID,BusinessPartnerFormattedName,CategoryCodeText"
+    var filter = "&$top=50"
 
     options.url = ByDServer + model_bps + "?$format=json" + select + filter
     options.method = "GET"

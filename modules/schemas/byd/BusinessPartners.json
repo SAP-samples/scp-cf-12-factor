@@ -1,5 +1,5 @@
 {
     "code": "InternalID",
-    "name": "BusinessPartnerName",
-    "type": "RoleCodeText"
+    "name": "BusinessPartnerFormattedName",
+    "type": "CategoryCodeText"
 }
