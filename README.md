@@ -53,6 +53,8 @@ cf REDIS_HOST cf-12-factor <redisinstance>.redis.cache.windows.net
 cf restart cf-12-factor
 ```
 
+**STEP 6** - Run the app on the **route** displayed in the terminal
+
   
 
 ## Backing Service offerings:
