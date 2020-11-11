@@ -1,3 +1,4 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/Ralphive/cf-12-factor)](https://api.reuse.software/info/github.com/Ralphive/cf-12-factor)
 # cf-12-factor
 _forked from B1SA/cfDemoSummit18_
 
