@@ -24,7 +24,7 @@ var vcap = null;
 if (process.env.VCAP_SERVICES) {
   vcap = JSON.parse(process.env.VCAP_SERVICES);
 
-  if (vcap.hasOwnProperty('redis')) {
+  if (vcap.hasOwnProperty('redis-cache')) {
     credentials = vcap.redis[0].credentials;
     credentials.host = credentials.hostname
     console.log("Redis credentials found in VCAP")
