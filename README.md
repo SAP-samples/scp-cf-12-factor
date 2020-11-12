@@ -1,4 +1,5 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/scp-cf-12-factor)](https://api.reuse.software/info/github.com/SAP-samples/scp-cf-12-factor)
+[![License: Apache2](https://img.shields.io/badge/License-Apache2-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # cf-12-factor
 _forked from B1SA/cfDemoSummit18_
