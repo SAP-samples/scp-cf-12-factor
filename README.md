@@ -1,4 +1,4 @@
-[![REUSE status](https://api.reuse.software/badge/github.com/Ralphive/cf-12-factor)](https://api.reuse.software/info/github.com/Ralphive/cf-12-factor)
+[![REUSE status](https://api.reuse.software/badge/github.com/Ralphive/cf-12-factor)](https://api.reuse.software/info/github.com/Ralphive/scp-cf-12-factor)
 # cf-12-factor
 _forked from B1SA/cfDemoSummit18_
 
@@ -10,9 +10,10 @@ It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) laye
 
 This application can be deployed also on a [Local Machine (for development purposes)](README-local.md)
 
+A full webinar presenting the 12 factors and how this app implements them is available to SAP Partners: [Part 1](https://dam.sap.com/mac/app/p/video/asset/preview/MeesDe4?ltr=v&) and [Part 2](https://dam.sap.com/mac/app/p/video/asset/preview/eFVVjpn?)
+
 ## Requirments
 ### Digital Core
-
 * SAP Business One - Service Layer Exposed
 * SAP Business ByDesign - [Business Partner Custom Odata Service](https://github.com/SAP-samples/byd-api-samples/blob/master/Custom%20OData%20Services/khbusinesspartner.xml)
 
@@ -27,7 +28,7 @@ git clone https://github.com/Ralphive/cf-12-factor.git
 ```
 **STEP 2** - Navigate to the directory you cloned and Push the app to Cloud Foundry
 ```bash
-$ cf push --random-route
+cf push --random-route
 ```
 **STEP 3** - Set the environment variables using the following command. 
 ```bash
