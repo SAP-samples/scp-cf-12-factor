@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: byd-delta-events
+Upstream-Name: scp-cf-12-factor
 Upstream-Contact: Ralphive <>
-Source: https://github.com/B1SA/cf-12-factor.git
+Source: https://github.com/SAP-samples/scp-cf-12-factor.git
 
 # Sample paragraph, commented out:
 #
