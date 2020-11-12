@@ -25,7 +25,7 @@ if (process.env.VCAP_SERVICES) {
   vcap = JSON.parse(process.env.VCAP_SERVICES);
 
   if (vcap.hasOwnProperty('redis-cache')) {
-    credentials = vcap.redis[0].credentials;
+    credentials = vcap['redis-cache'][0].credentials;
     credentials.host = credentials.hostname
     console.log("Redis credentials found in VCAP")
   } else {
@@ -52,7 +52,8 @@ if (!credentials) {
 
 var redisClient = redis.createClient(credentials,);
 
-redisClient.on('error', function (er) {
+redisClient.on('error', function (err) {
+  console.error(err)
   console.log('No REDISs. App running without a Cache System');
   //console.error(er.stack);
 });

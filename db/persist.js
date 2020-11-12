@@ -28,7 +28,7 @@ if (process.env.VCAP_SERVICES) {
     
     if(vcap.hasOwnProperty('postgresql-db')){
         //Postgresql on CloudFoundry services
-        credentials = { connectionString: vcap.postgresql[0].credentials.uri }
+        credentials = { connectionString: vcap['postgresql-db'][0].credentials.uri }
         console.log("PostgresSQL found in VCAP Services")
     }else{
         console.log("No PostgresSQL found in VCAP Services")
