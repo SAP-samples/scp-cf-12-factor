@@ -23,9 +23,7 @@ A full webinar presenting the 12 factors and how this app implements them is ava
 
 ## Deployment
 **STEP 1** - Download or Clone this repository
-```bash
-git clone https://github.com/Ralphive/cf-12-factor.git
-```
+
 **STEP 2** - Navigate to the directory you cloned and Push the app to Cloud Foundry
 ```bash
 cf push --random-route
@@ -37,22 +35,18 @@ cf set-env cf-12-factor ERP_ODATA_HOST b1 http://<b1 host>:50001/b1s/v2
 ```
   _full list of variables on [sample-launch.json](sample-launch.json)_
 
-  
-
-**STEP 4 - OPTIONAL** - Set the environment variables for the remote backing services (Redis and PostgresSQL)
+**STEP 4 - OPTIONAL** - Set the environment variables for the remote backing services (Redis and PostgresSQL).
 ```bash
 cf REDIS_HOST cf-12-factor <redisinstance>.redis.cache.windows.net
 ```
+_Steps to created those services for free on hyperscalers [in here](HandsOn_cf12factors_guide.pdf)_
+
 **STEP 5** - Restart the app
 ```bash
 cf restart cf-12-factor
 ```
 
 **STEP 6** - Run the app on the **route** displayed in the terminal
-
-### Backing Service offerings:
-*  [Redis on Azure](https://azure.microsoft.com/en-gb/services/cache/)
-*  [Postgres on AWS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html) or on [Azure](https://azure.microsoft.com/en-gb/services/postgresql/)
 
 ## Support and Contributions
 This repository is provided "as-is". No support is available. Feel free to open issues or provide pull requests.
