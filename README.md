@@ -14,6 +14,8 @@ This application can be deployed also on a [Local Machine (for development purpo
 
 A full webinar presenting the 12 factors and how this app implements them is available to SAP Partners: [Part 1](https://dam.sap.com/mac/app/p/video/asset/preview/MeesDe4?ltr=v&) and [Part 2](https://dam.sap.com/mac/app/p/video/asset/preview/eFVVjpn?)
 
+Exercise steps available [on this guide](HandsOn_cf12factors_guide.pdf)
+
 ## Requirments
 ### Digital Core
 * SAP Business One - Service Layer Exposed
