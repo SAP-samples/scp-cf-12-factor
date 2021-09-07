@@ -4,8 +4,6 @@
 # cf-12-factor
 _forked from B1SA/cfDemoSummit18_
 
-[![SAP](https://i.imgur.com/kkQTp3m.png)](https://cloudplatform.sap.com)
-
 ## Description  
 Sample [12-factor app](https://12factor.net/) showing a scalable, resilient, ERP Agnostic, Loosely Coupled Architecture. This application works with both B1 and ByD.
 It also shows how to implement a persistence (PostgreSQL) and Cache (Redis) layers. These backing services are optional for the app to run, but extremely recommended.
@@ -23,7 +21,7 @@ Exercise steps available [on this guide](HandsOn_cf12factors_guide.pdf)
 
 ### Tooling
 *  [Install the Cloud Foundry CLI](https://developers.sap.com/tutorials/cp-cf-download-cli.html)
-*  [Learn the Fundamentals of SCP Cloud Foundry](https://developers.sap.com/tutorials/cp-cf-fundamentals.html)
+*  [Learn the Fundamentals of SAP BTP, Cloud Foundry environment](https://developers.sap.com/tutorials/cp-cf-fundamentals.html)
 
 ## Deployment
 **STEP 1** - Download or Clone this repository
