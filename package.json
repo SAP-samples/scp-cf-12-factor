@@ -33,7 +33,7 @@
   "homepage": "https://github.com/Ralphive/cf-12-factor.git#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.17.3",
+    "express": "^4.19.2",
     "jsonata": "^1.6.4",
     "moment": "^2.29.4",
     "pg": "^8.11.0",
