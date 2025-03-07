@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "scp-cf-12-factor"
+SPDX-PackageSupplier = "Ralphive <>"
+SPDX-PackageDownloadLocation = "https://github.com/SAP-samples/scp-cf-12-factor.git"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2020 SAP SE or an SAP affiliate company and byd-delta-events contributors"
+SPDX-License-Identifier = "Apache-2.0"
